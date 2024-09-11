@@ -14,10 +14,11 @@ func (m *GeitRavi) BuildInScratch() *dagger.Container {
 		From("golang:alpine").
 		WithDirectory("/src", repo).
 		WithWorkdir("/src").
-		WithExec([]string{"go", "build"}).
-		File("./main")
+		WithExec([]string{"go", "build", "-o", "/go/bin/hello"}).
+		File("/go/bin/hello")
 
 	return dag.Container().
-		WithFile("/main", binary).
-		WithExec([]string{"/main"})
+		WithFile("/go/bin/hello", binary).
+		WithDefaultArgs([]string{"/go/bin/hello"}).
+		WithExec(nil)
 }
